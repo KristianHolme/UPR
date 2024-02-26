@@ -9,7 +9,7 @@ function d = pdist2(x,y)
   % Uses the fact that 
   %    ||x-y||^2 = ||x||^2 + ||y||^2 - 2*x.y
   % and takes the absolute value to avoid problems with roundoff.
-   d = sqrt(abs(bsxfun(@plus, sum(x.^2,2),sum(y.^2,2)') - 2*(x*y')));
-end
+  
+  d = sqrt(abs(bsxfun(@plus, sum(x.^2,2),sum(y.^2,2)') - 2*(x*y')));
 
- 
+end

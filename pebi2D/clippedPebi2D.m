@@ -35,6 +35,8 @@ E = dt.edges();
 
 m = size(bnd,1);
 
+roundFactor = 1e9;
+
 
 
 rem = true(size(E,1),1);
@@ -52,7 +54,7 @@ for s = 1:size(p,1)
 
     [newVertex, ~] = clipPolygon(bnd, n, x0, symT, bisect,'noSym',true);
 
-    newVertex = round(newVertex*1e6)/1e6;
+    newVertex = round(newVertex*roundFactor)/roundFactor;
     newVertex = unique(newVertex,'rows','stable');
     %keep = inpolygon(newVertex(:,1), newVertex(:,2), bnd(:,1), bnd(:,2));
     %newVertex = newVertex(keep,:); % The clipPolygon routine might return
@@ -65,7 +67,7 @@ for s = 1:size(p,1)
     
 
 end
-V = round(V*10^6)/10^6;
+V = round(V*roundFactor)/roundFactor;
 [V,~,IC] = unique(V,'rows');
 
 G.cells.num = numel(C);

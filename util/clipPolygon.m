@@ -12,7 +12,11 @@ assert(size(n,1)==size(x0,1),'unconsistent size of n and x0');
 assert(size(p,1)>2, 'A polygon needs more than 2 vertexes');
 
 opt = struct('noSym',false);
-opt = merge_options(opt,varargin{:});
+if strcmpi(varargin{1}, 'nosym')%this is faster
+    opt.noSym = varargin{2};
+end
+
+% opt = merge_options(opt,varargin{:}); %this is super slow
 
 %IC = zeros(size(p,1),1);
 % symP = [-4,-2,-1;

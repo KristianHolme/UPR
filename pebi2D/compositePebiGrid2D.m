@@ -152,7 +152,8 @@ opt = struct('cellConstraints', {{}}, ...
              'protLayer',       false, ...
              'protD',           {{@(p) ones(size(p,1),1)*norm(celldim)/10}},...
              'polyBdr',         zeros(0,2),...
-             'useMrstPebi',     false);
+             'useMrstPebi',     false, ...
+             'earlyReturn',     false);
 
 opt = merge_options(opt, varargin{:});
 circleFactor = opt.circleFactor;
@@ -295,7 +296,10 @@ resPts = removeConflictPoints(resPts, F.c.CC,   F.c.R);
 
 % Create grid
 Pts = [F.f.pts; CCPts; protPts; F.t.pts; resPts];
-
+if opt.earlyReturn
+    G = [];
+    return
+end
 if opt.useMrstPebi
     G = pebi(triangleGrid(Pts));
 else
