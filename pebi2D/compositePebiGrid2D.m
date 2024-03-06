@@ -300,6 +300,7 @@ if opt.earlyReturn
     G = [];
     return
 end
+
 if opt.useMrstPebi
     G = pebi(triangleGrid(Pts));
 else

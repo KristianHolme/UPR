@@ -39,7 +39,7 @@ function [p] = interLinePath(line, fh, lineDist, sePtn, interpol, varargin)
         p = [line(1,:);p];  flag=[true; flag]; end
     if sePtn(2)~=0
         p = [p;line(end,:)]; flag=[flag; true]; end
- 
+    % 
     % plot(line(:,1),line(:,2),':k','LineWidth',1), hold all,              % makePlot
     % ncol = size(p,1);                                                    % makePlot
     % col = tatarizeMap(ncol);                                             % makePlot

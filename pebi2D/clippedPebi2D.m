@@ -35,7 +35,7 @@ E = dt.edges();
 
 m = size(bnd,1);
 
-roundFactor = 1e9;
+roundFactor = 1e6;
 
 
 
