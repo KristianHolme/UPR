@@ -161,6 +161,9 @@ circleFactor = opt.circleFactor;
 % Set grid sizes
 CCGridSize     = min(celldim)*opt.CCFactor;
 FCGridSize     = min(celldim)*opt.FCFactor;
+if numel(FCGridSize) == 1 && numel(opt.faceConstraints) > 1
+    FCGridSize = repmat(FCGridSize, numel(opt.faceConstraints), 1);
+end
 mlqtMaxLevel   = opt.mlqtMaxLevel;
 mlqtLevelSteps = opt.mlqtLevelSteps;
 CCRho          = @(x) CCGridSize*opt.CCRho(x);
@@ -170,7 +173,7 @@ assert(numel(pdims)==2);
 assert(all(pdims>0 ));
 assert(CCGridSize>0);
 assert(mlqtMaxLevel>=0);
-assert(FCGridSize>0);
+assert(all(FCGridSize>0));
 assert(0.5<circleFactor && circleFactor<1);
 
 if ~isempty(opt.cellConstraints)
@@ -203,6 +206,7 @@ end
 % Split face constraints and cell constraints
 [faceConstraints, fCut, fcCut, IC] = splitAtInt2D(opt.faceConstraints, opt.cellConstraints);
 interpFL = opt.interpolateFC(IC);
+FCGridSize = FCGridSize(IC);
 
 [cellConstraints,  cCut, cfCut, IC] = splitAtInt2D(opt.cellConstraints, opt.faceConstraints);
 interpWP = opt.interpolateCC(IC);
@@ -218,9 +222,9 @@ interpWP  = [interpWP; opt.interpolateCC(vW)];
 protD     = [protD; opt.protD(vW)];
 
 % Create cell constraint sites
-bisectPnt = (FCGridSize.^2 - (circleFactor*FCGridSize).^2 ...
-            + (circleFactor*FCGridSize).^2) ./(2*FCGridSize);
-faultOffset = sqrt((circleFactor*FCGridSize).^2 - bisectPnt.^2);
+bisectPnt = (CCGridSize.^2 - (circleFactor*CCGridSize).^2 ...
+            + (circleFactor*CCGridSize).^2) ./(2*CCGridSize);
+faultOffset = sqrt((circleFactor*CCGridSize).^2 - bisectPnt.^2);
 sePtn = [cfCut==2|cfCut==3, cfCut==1|cfCut==3];
 sePtn = (1.0+faultOffset/CCGridSize)*sePtn;
 
