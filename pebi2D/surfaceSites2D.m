@@ -395,7 +395,7 @@ function [F] = fixIntersections(F,fh, circFac, mergeTol)
   int  = lineCircInt(F.c.CC(circ(:,3),:),F.c.R(circ(:,3)), line);
 
   merge = (F.c.CC(circ(:,1)) - F.c.CC(circ(:,2))).^2 ...
-            <(mergeTol*fh(F.c.CC(circ(:,1),:))).^2;
+            <(mergeTol*arrayfun(@(circi)mean(fh(F.c.CC(circi,:), [F.c.l(F.c.lPos(circi):F.c.lPos(circi+1)-1)])), circ(:,1))).^2;
   if any(merge)
     
     mC = [circ(:,1), circ(:,2)];
@@ -482,7 +482,10 @@ function [F] = mergeCirc(F,c,fh,circFac)
   C1 = c(:,1);
   C2 = c(:,2);
   newCC = (F.c.CC(C1,:) + F.c.CC(C2,:))/2;
-  newR = 1.1*circFac*fh(F.c.CC(C1,:));
+  % newR = 1.1*circFac*fh(F.c.CC(C1,:));
+  newR = 1.1*circFac*arrayfun(@(circi)mean(fh(F.c.CC(circi,:), [F.c.l(F.c.lPos(circi):F.c.lPos(circi+1)-1)])), C1);
+  
+  
   [neigh,neighPos] = findNeighbors(rc,F);
   assert(all(diff(neighPos)==2));
 
