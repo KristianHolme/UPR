@@ -275,12 +275,13 @@ end
 
 % Refine reservoir grid
 if ~isempty(CCPts)
-    res = {};
+    nPts = size(resPtsInit, 1);
+    resPts = zeros(nPts, 2); % Preallocate array
     varArg = {'level', 1, 'maxLev', mlqtMaxLevel, 'distTol', mlqtLevelSteps};
-    for i = 1:size(resPtsInit,1)
-        res = [res; mlqt(resPtsInit(i,:), CCPts, celldim, varArg{:})];
+    for i = 1:nPts
+        mlqtresult = mlqt(resPtsInit(i,:), CCPts, celldim, varArg{:});
+        resPts(i,:) = mlqtresult{1}; 
     end
-    resPts = vertcat(res{:, 1});
     %resGridSize = 0.5*[res{:,2}]';
 else
     resPts = resPtsInit;
