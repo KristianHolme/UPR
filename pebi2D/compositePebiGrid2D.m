@@ -281,7 +281,7 @@ if ~isempty(CCPts)
     varArg = {'level', 1, 'maxLev', mlqtMaxLevel, 'distTol', mlqtLevelSteps};
     for i = 1:nPts
         mlqtresult = mlqt(resPtsInit(i,:), CCPts, celldim, varArg{:});
-        res(i,:) = mlqtresult{1}; 
+        resPts(i,:) = mlqtresult{1}; 
     end
     %resGridSize = 0.5*[res{:,2}]';
 else
