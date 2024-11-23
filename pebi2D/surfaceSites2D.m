@@ -495,6 +495,14 @@ function [F] = mergeCirc(F,c,fh,circFac)
   N  = [N1(:,1:2), N2(n')];
 
   newPts = circCircInt(newCC, newR, reshape(F.c.CC(N',:)',6,[])',reshape(F.c.R(N),[],3));
+  attempts = 0;
+  maxAttempts = 10;
+  while ~isreal(newPts) && attempts < maxAttempts
+    warning('Complex intersections detected - adjusting radius');
+    newR = 1.1 * newR;  % Increase radius and try again
+    newPts = circCircInt(newCC, newR, reshape(F.c.CC(N',:)',6,[])',reshape(F.c.R(N),[],3));
+    attempts = attempts + 1;
+  end
   
   c1Pos = [F.c.lPos(C1),F.c.lPos(C1+1)-1];
   c2Pos = [F.c.lPos(C2),F.c.lPos(C2+1)-1];
